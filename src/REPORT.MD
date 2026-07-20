@@ -295,7 +295,7 @@ Minikube - решение для локального кластера Kubernete
 
 Всё, что нам нужно для запуска тестового кластера
 
-- Виртуалка с 4+ Gb оперативы и 2+ ядрами
+- Виртуалка с 4+ GB оперативы и 2+ ядрами и 30+ GB постоянки
 - Подготовить окружение, избавившись от свапа 
 Если swap останется гарантировать предсказуемую работу куба мы не сможем. Один сервис размещённый в swap затормозит весь кластер. 
 - Установить kubectl, minikube
@@ -308,8 +308,10 @@ Minikube - решение для локального кластера Kubernete
 `sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab`
 
 Устанавливаем `kubectl`
-`curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl`
+
+`curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"`
+
+`sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl`
 
 Устанавливаем `minikube`
 
@@ -320,7 +322,39 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube`
 Пробуем запустить кластер:
 `minikube start --memory 4096 --driver=docker`
 
-По умолчанию `minikube` запускатся с 2 ядрами и 2 Gb. Мы указали 4 Gb, число ядер останется по умолчанию
+По умолчанию `minikube` запускатся с 2 ядрами и 2 Gb. Мы указали 4 Gb, число ядер останется по умолчанию. 
+***Важно!***   
+Выдели под виртуалку 30+ GB, иначе куб не заведётся. Ему нужно много места.
+
+Результат запуска:
+
+![P1.1](./assets/P1.1.png)
+
+Передадим папку с манифестом на машину:
+
+`scp -r -P  [порт] /путь/к-папке/ [логин]@[адрес]:/путь-к/папке-назначения`
+
+Применим манифест:
+
+`kubectl apply -f src/example/microservices.yml`
+
+![P1.2](./assets/P1.2.png)
+
+**Шпора по командам**
+`https://kubernetes.io/ru/docs/reference/kubectl/cheatsheet/`
+
+Проверим, что поды поднялись:
+
+`kubectl get pods`
+
+Результат:
+![P1.3](./assets/P1.3.png)
+
+Как мы видим, не все поды доняты. подождём.
+
+![P1.4](./assets/P1.4.png)
+
+Отлично! У нас получилось. Теперь нужно получить доступ к борде. Куб крутится на виртуалке 
 
 
 
@@ -344,7 +378,7 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube`
 
 Пример содержимого такого файла:
 
-![P2.1](./assets/P1.1.png)
+![P2.1](./assets/P2.1.png)
 
 Вещи, которые следует поместить в ConfigMaps:
 - URL
