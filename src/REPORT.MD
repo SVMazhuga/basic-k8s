@@ -514,3 +514,39 @@ http://localhost:8080
 `spring.datasource.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`
 
 То, есть если мы будем бездумно впсывать в ConfigMaps переменные, все сочетания ключ=значение, что встретим в конфигах сервисов мы получи больше 5 пар с одинаковым ключом  `POSTGRES_DB`. Куб считает посоледний, проигнорировав предыдущие. Создадим уникальные имена для всех переменных, а чтобы не ломать файлы `application.properties`для каждого сервиса - пропишем переменную с каким ключом брать в поле spec манифеста.
+
+### 2.3 Пишем конфиги:
+
+Пишем стандартную шапку, перечисляем переменные в поле data (configmap) и stringData (secret)
+
+![P2.2](./assets/P2.2.png)
+
+![P2.3](./assets/P2.3.png)
+
+Важные моменты: 
+
+Если private/public ключи записаны в таком формате:
+
+`privateKey=MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9Q1hl6ossCg5T\
+r43IW0px2Wz0tDOKRHncreZcew3G+63QuXrLSb5BRh24q0ej4W+Wj8/6RR6vwG1h\
+FtPIBqy6OYUvEdBmOay9eEpzQc2Xy253qSQyxco4FmyNLAwfyk0JS5DKdagT6ct3\`
+
+Стоит переносы убрать, строки склеить:
+
+![P2.4](./assets/P2.4.png)
+
+Передадим configmap.yaml, secret.yaml на машину с кубом:
+
+scp -P [порт] путь/к файлам [логин]@localhost:путь/к_папке_назначения
+
+Применим конфиги: 
+
+![P2.5](./assets/P2.5.png)
+
+посмотрим, что создалось:
+
+![P2.6](./assets/P2.6.png)
+
+Посмотрим на содержание:
+
+![P2.7](./assets/P2.7.png)
