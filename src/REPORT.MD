@@ -541,12 +541,30 @@ scp -P [порт] путь/к файлам [логин]@localhost:путь/к_п
 
 Применим конфиги: 
 
+`kubectl apply -f ./путь_к_файлу`
+
 ![P2.5](./assets/P2.5.png)
 
 посмотрим, что создалось:
+
+`kubectl get configmap app-config`
+`kubectl get secret app-secrets`
 
 ![P2.6](./assets/P2.6.png)
 
 Посмотрим на содержание:
 
+`kubectl describe configmap app-config`
+
+`kubectl describe secret app-secrets`
+
+>Если запросить просто, к примеру `kubectl describe configmap`, мы получим configmap системы по умолчанию, автоматически созданный kubernetes, а не тот, что мы создали.
+
 ![P2.7](./assets/P2.7.png)
+![P2.8](./assets/P2.8.png)
+
+>Как мы видим, команда `kubectl describe secret app-secrets` выводит только метаданные. Чтобы получить само содержание, необходимо получить сам `.yaml`
+
+`kubectl get secret app-secrets -o yaml`
+
+![2.9](./assets/P2.9.png)
