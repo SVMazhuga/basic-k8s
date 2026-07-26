@@ -40,11 +40,11 @@ data:
 
   BOOKING_SERVICE_UUID: "911ccb4c-c055-11eb-8529-0242ac130003"
   
-  publicKey: > 
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvUNYZeqLLAoOU6+NyFtK
-    cdls9LQzikR53K3mXHsNxvut0Ll6y0m+QUYduKtHo+Fvlo/P+kUer8BtYRbTyAas
-    ujmFLxHQZjmsvXhKc0HNl8tud6kkMsXKOBZsjSwMH8pNCUuQynWoE+nLdwKkHvfq
-    BrBB39fAlg/3Z2K3yiOuOLqp4iNy865PmJyMGfAQoSjDeNKne15EblrCQRhCa/oa
-    dRdSr2mGz8/4KrwSUviJRt+/+pjtcaDGg3z8RFAiWx4lkvD3EngvU5ZVVbQvqMj5
-    0M2BGwYe2X8W8AA98uRVt6sVjd97EOd12h+8x6J3TAECeoUETgm+jJf9GwSn1NIc
+  publicKey: |- 
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvUNYZeqLLAoOU6+NyFtK\
+    cdls9LQzikR53K3mXHsNxvut0Ll6y0m+QUYduKtHo+Fvlo/P+kUer8BtYRbTyAas\
+    ujmFLxHQZjmsvXhKc0HNl8tud6kkMsXKOBZsjSwMH8pNCUuQynWoE+nLdwKkHvfq\
+    BrBB39fAlg/3Z2K3yiOuOLqp4iNy865PmJyMGfAQoSjDeNKne15EblrCQRhCa/oa\
+    dRdSr2mGz8/4KrwSUviJRt+/+pjtcaDGg3z8RFAiWx4lkvD3EngvU5ZVVbQvqMj5\
+    0M2BGwYe2X8W8AA98uRVt6sVjd97EOd12h+8x6J3TAECeoUETgm+jJf9GwSn1NIc\
     /QIDAQAB
