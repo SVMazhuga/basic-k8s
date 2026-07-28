@@ -684,3 +684,60 @@ kind: Deployment`
 
 ![P2.14](./assets/P2.14.png)
 
+В `deployment`'е это нужно сделать только раз в самой верхней шапке
+
+Применим наши конфиги снова:
+
+`kubectl apply -f ./services/confs/configmap.yaml`
+
+`kubectl apply -f ./services/confs/secret.yaml`
+
+`kubectl apply -f ./services/postgres-service/postgres-init-configmap.yaml`
+
+`kubectl apply -f ./services/postgres-service/postgres-deployment.yaml`
+
+![P2.15](./assets/P2.15.png)
+
+Убедимся, что всё получилось:
+
+`kubectl get pods -n microservices`
+
+![P2.16](./assets/P2.16.png)
+
+Мы - ***великллепны***. В том же духе пишем для `RabbitMQ`
+
+Особенности deployment'a для rabbitmq:
+
+- Переменная окружения для логина - `RABBITMQ_DEFAULT_USER`
+- Переменная окружения для пароля - `RABBITMQ_DEFAULT_PASSWORD`
+- Если берём образ с management - необходимо указать в deployment'e и service порт для UI. Пример ниже:
+
+![P2.17](./assets/P2.17.png)
+
+Применим манифест:
+
+`kubectl apply -f ./services/rabbitmq-service/rabbitmq-deployment.yaml`
+
+![P2.18](./assets/P2.18.png)
+
+Попробуем подключится к борде:
+
+ Пробрасываем порт за пределы гостя: 
+
+`kubectl port-forward svc/rabbitmq 15672:15672 -n microservices` 
+
+Открываем ssh-туннель:
+
+`ssh -L 15672:127.0.0.1:15672 -p 2200 u1@localhost`
+
+Результат:
+
+![P2.19](./assets/P2.19.png)
+
+Входим по логину и пароль из `secret.yaml`
+
+![P2.20](./assets/P2.20.png)
+
+***Как же мы хороши!***
+
+Переходим к сервисам:
