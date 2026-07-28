@@ -646,4 +646,41 @@ kind: Deployment`
 
 ### 2.5 Пишем остальные конфиги
 
-Здесь отметим только важные моменты, покажем, что запускаем сервисы по очереди, как и требует задание
+Здесь отметим только важные моменты, покажем, что запускаем сервисы по очереди, как и требует задание.
+
+1) Мы принимали манифест и самописные конфиги в `default` неймспейсе. Харам.
+
+- Удалим мусор из `default`
+
+`kubectl delete deployments --all -n default`
+
+`kubectl delete services --all -n default`
+
+`kubectl delete configmaps --all default`
+
+`kubectl delete secrets --all -n default`
+
+- Создадим новый неймспейс:
+
+`kubectl create namespace microservices`
+
+- Проверим его наличие:
+
+`kubectl get namespaces`
+
+Пепеключимся на новый неймспейс:
+
+`kubectl config set-context --current --namespace=microservices`
+
+ ***ИЛИ, ЧТО КРУЧЕ***
+
+- Откорректируем артифакты, добавив указание, в каком неймспейсе применять. Так они будут самодостаточными и ломать голову не нужно будет.
+
+Сделаем по второму пути:
+
+В поле `metadata` поле раздела `name` добавим `namespace` и явно укажем имя созданного неймспейса.
+
+Например:
+
+![P2.14](./assets/P2.14.png)
+
