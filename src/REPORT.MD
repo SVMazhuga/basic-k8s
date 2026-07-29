@@ -763,3 +763,22 @@ kind: Deployment`
 - Собрать образы внутри kubernetes
 - Проанализировать конфигурации сервисов 
 - Написать Deployment
+ 
+
+**Сборка образа**
+
+Либо посредством:
+
+- `eval $(minikube docker-env)` 
+- `docker build -t session-service:1.0 .`
+
+либо
+
+- `docker build -t session-service:1.0 .`
+- `minikube image load session-service:1.0`
+
+
+![P2.21](./assets/P2.21.png)
+
+Повторяем для всех остальных.
+
