@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: report-service
+  name: booking-service
   namespace: microservices
   labels:
-    app: report-service
+    app: booking-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: report-service
+      app: booking-service
   template:
     metadata:
       labels:
-        app: report-service
+        app: booking-service
     spec:
       containers:
-      - name: report-service
-        image: report-service:1.0
+      - name: booking-service
+        image: booking-service:1.0
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 8086
+        - containerPort: 8083
         env:
         - name: POSTGRES_USER
           valueFrom:
@@ -46,7 +46,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: app-config
-              key: REPORT_DB
+              key: BOOKING_DB
         - name: PRIVATE_KEY
           valueFrom:
             secretKeyRef:
@@ -67,7 +67,7 @@ spec:
             configMapKeyRef:
               name: app-config
               key: BOOKING_SERVICE_UUID
-        - name: RABBIT_MQ_USER
+        - name: RABBITMQ_MQ_USER
           valueFrom:
             secretKeyRef: 
               name: app-secrets
@@ -97,6 +97,36 @@ spec:
             configMapKeyRef:
               name: app-config
               key: RABBIT_MQ_EXCHANGE
+        - name: HOTEL_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: HOTEL_SERVICE_HOST
+        - name: HOTEL_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: HOTEL_SERVICE_PORT
+        - name: PAYMENT_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: PAYMENT_SERVICE_HOST
+        - name: PAYMENT_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: PAYMENT_SERVICE_PORT
+        - name: LOYALTY_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: LOYALTY_SERVICE_HOST
+        - name: LOYALTY_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: LOYALTY_SERVICE_PORT              
         resources:
           requests:
             memory: "256Mi"
@@ -111,14 +141,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: report-service
+  name: booking-service
   namespace: microservices
   labels:
-    app: report-service
+    app: booking-service
 spec:
   selector:
-    app: report-service
+    app: booking-service
   ports:
-  - port: 8086
-    targetPort: 8086
+  - port: 8083
+    targetPort: 8083
   type: ClusterIP
