@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: session-service
+  name: loyalty-service
   namespace: microservices
   labels:
-    app: session-service
+    app: loyalty-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: session-service
+      app: loyalty-service
   template:
     metadata:
       labels:
-        app: session-service
+        app: loyalty-service
     spec:
       containers:
-      - name: session-service
-        image: session-service:1.0
+      - name: loyalty-service
+        image: loyalty-service:1.0
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 8081
+        - containerPort: 8085
         env:
         - name: POSTGRES_USER
           valueFrom:
@@ -46,7 +46,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: app-config
-              key: SESSION_DB
+              key: LOYALTY_DB
         - name: PRIVATE_KEY
           valueFrom:
             secretKeyRef:
@@ -57,6 +57,16 @@ spec:
             configMapKeyRef:
               name: app-config
               key: publicKey
+        - name: GATEWAY_SERVICE_UUID
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: GATEWAY_SERVICE_UUID
+        - name: BOOKING_SERVICE_UUID
+          valueFrom:
+            configMapKeyRef: 
+              name: app-config
+              key: BOOKING_SERVICE_UUID
         resources:
           requests:
             memory: "256Mi"
@@ -71,14 +81,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: session-service
+  name: loyalty-service
   namespace: microservices
   labels:
-    app: session-service
+    app: loyalty-service
 spec:
   selector:
-    app: session-service
+    app: loyalty-service
   ports:
-  - port: 8081
-    targetPort: 8081
+  - port: 8085
+    targetPort: 8085
   type: ClusterIP

@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-service
+  namespace: microservices
+  labels:
+    app: report-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: report-service
+  template:
+    metadata:
+      labels:
+        app: report-service
+    spec:
+      containers:
+      - name: report-service
+        image: report-service:1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8086
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef: 
+              name: app-secrets
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: POSTGRES_PORT
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: POSTGRES_HOST
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REPORT_DB
+        - name: PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: privateKey
+        - name: PUBLIC_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: publicKey
+        - name: GATEWAY_SERVICE_UUID
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: GATEWAY_SERVICE_UUID
+        - name: BOOKING_SERVICE_UUID
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: BOOKING_SERVICE_UUID
+        - name: RABBITMQ_MQ_USER
+          valueFrom:
+            secretKeyRef: 
+              name: app-secrets
+              key: RABBIT_MQ_USER
+        - name: RABBITMQ_MQ_PASS
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: RABBIT_MQ_PASSWORD
+        - name: RABBIT_MQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBIT_MQ_HOST
+        - name: RABBIT_MQ_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBIT_MQ_PORT
+        - name: RABBIT_MQ_QUEUE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBIT_MQ_QUEUE_NAME
+        - name: RABBIT_MQ_EXCHANGE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBIT_MQ_EXCHANGE
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: report-service
+  namespace: microservices
+  labels:
+    app: report-service
+spec:
+  selector:
+    app: report-service
+  ports:
+  - port: 8086
+    targetPort: 8086
+  type: ClusterIP
