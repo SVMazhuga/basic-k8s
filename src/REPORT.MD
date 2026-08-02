@@ -874,3 +874,54 @@ kind: Deployment`
 ![P2.35](./assets/P2.35.png)
 
 ![P2.36](./assets/P2.36.png)
+
+### 2.8 Функционлаьные тесты
+
+Прокинем туннели для `session-service`, `gateway-service` из кластера в Ubuntu.
+
+`kubectl port-forward svc/session-service 8081:8081 -n microservices --address 127.0.0.1,10.0.2.15`
+
+`kubectl port-forward svc/gateway-service 8087:8087 -n microservices --address 127.0.0.1,10.0.2.15`
+
+Пробросим порты на хост:
+
+`ssh -L 8081:127.0.0.1:8081 -p 2200 u1@localhost`
+
+`ssh -L 8087:127.0.0.1:8087 -p 2200 u1@localhost`
+
+![P2.37](./assets/P2.37.png)
+
+Проведём тесты в `Postman`
+
+![P2.38](./assets/P2.38.png)
+
+![P2.39](./assets/P2.39.png)
+
+![P2.40](./assets/P2.40.png)
+
+![P2.41](./assets/P2.41.png)
+
+![P2.42](./assets/P2.42.png)
+
+Все сервисы со статусом 200/201. 
+
+Логи `booking-service`
+
+![P2.43](./assets/P2.43.png)
+
+***Мы-молодцы!***
+
+Получаем доступ к борде ровно также, как в первой части:
+
+![P2.44](./assets/P2.44.png)
+
+![P2.45](./assets/P2.45.png)
+
+![P2.46](./assets/P2.46.png)
+
+![P2.47](./assets/P2.47.png)
+
+![P2.48](./assets/P2.48.png)
+
+**Снова успех!**
+
