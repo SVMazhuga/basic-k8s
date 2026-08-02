@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+  namespace: microservices
+  labels:
+    app: gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+      - name: gateway-service
+        image: gateway-service:1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8087
+        env:
+        - name: GATEWAY_SERVICE_UUID
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: GATEWAY_SERVICE_UUID
+        - name: SESSION_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: SESSION_SERVICE_HOST
+        - name: SESSION_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: SESSION_SERVICE_PORT
+        - name: HOTEL_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: HOTEL_SERVICE_HOST
+        - name: HOTEL_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: HOTEL_SERVICE_PORT
+        - name: BOOKING_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: BOOKING_SERVICE_HOST
+        - name: BOOKING_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: BOOKING_SERVICE_PORT
+        - name: LOYALTY_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: LOYALTY_SERVICE_HOST
+        - name: LOYALTY_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: LOYALTY_SERVICE_PORT
+        - name: REPORT_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REPORT_SERVICE_HOST
+        - name: REPORT_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REPORT_SERVICE_PORT
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  namespace: microservices
+  labels:
+    app: gateway-service
+spec:
+  selector:
+    app: gateway-service
+  ports:
+  - port: 8087
+    targetPort: 8087
+  type: ClusterIP
