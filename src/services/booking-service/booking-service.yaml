@@ -72,7 +72,7 @@ spec:
             secretKeyRef: 
               name: app-secrets
               key: RABBIT_MQ_USER
-        - name: RABBITMQ_MQ_PASS
+        - name: RABBITMQ_MQ_PASSWORD
           valueFrom:
             secretKeyRef:
               name: app-secrets
