@@ -340,7 +340,7 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube`
 
 ![P1.2](./assets/P1.2.png)
 
-**Шпора по командам**
+>**Шпора по командам**
 `https://kubernetes.io/ru/docs/reference/kubectl/cheatsheet/`
 
 Проверим, что поды поднялись:
@@ -458,7 +458,7 @@ http://localhost:8080
 Мы - молодцы. Порты кидать умеем)
 
 
-## Part 2. Написание собственного манифеста
+## Part 2. Написание собственных манифестов
 
 
 ### 2.1 декомпозиция
@@ -812,3 +812,65 @@ kind: Deployment`
 
 Написание booking-service и gateway-service усложнено только тем, что нужно довнести переменные, связанные с другими сервисами. 
 
+Результат поднятия всех подов:
+
+![P2.26](./assets/P2.26.png)
+ 
+
+### 2.7 Доказательства 
+
+-  Убедимся, что `configmap`, `secret` созданы для нашего неймспейса:
+
+`kubectl get configmap app-config -n microservices`
+
+`kubectl get secret app-secrets -n microservices`
+
+![P2.27](./assets/P2.27.png)
+
+- Посмотрим содержание:
+
+`kubectl describe configmap app-configmaps -n microservices`
+
+![P2.28](./assets/P2.28.png)
+
+`kubectl describe secret app-secrets -n microservices`
+
+![P2.29](./assets/P2.29.png)
+
+Просто так посмотреть содержимое не выйдет. Нужно декодировать.
+
+`kubectl get secret app-secrets -o yaml -n microservices`
+
+![P2.30](./assets/P2.30.png)
+
+> Шифроование по умолчанию не включено и, поэтому, все объекты API в etce управляющего слоя лежат просто в кодировке base64 и по факту вообще не секреты для тех, кто имеет доступ к etcd. 
+
+ Автор проекта предложил команду формата:
+
+`kubectl get secret my-secret -o jsonpath='{.data.password}' | base64 --decode`
+
+ В нашем `secret` полей password нет и сделал я секрет в поле `stringData` Это огромная строка, и попытка расшифровки её всей ни к чему не приведёт. Нужно указывать ключи:
+
+![P2.32](./assets/P2.32.png)
+
+Немного изменим содержание: 
+
+`kubectl get secret app-secrets -n microservices -o jsonpath='{.data.POSTGRES_PASSWORD}'  | base64 --decode`
+
+и прочие. Пример:
+
+![P2.33](./assets/P2.33.png)
+
+- Посмотрим описани одного из подов: 
+
+`kubectl describe pod report-service-9d85767c7-w2ckc -n microservices`
+
+![P2.34](./assets/P2.34.png)
+
+- Посмотрим логи:
+
+`kubectl logs report-service-9d85767c7-w2ckc -n microservices`
+
+![P2.35](./assets/P2.35.png)
+
+![P2.36](./assets/P2.36.png)
