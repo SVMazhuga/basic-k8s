@@ -1,22 +1,5 @@
 # Basic Kubernetes
 
-💡 [Tap here](https://new.oprosso.net/p/4cb31ec3f47a4596bc758ea1861fb624) **to leave your feedback on the project**. It's anonymous and will help our team make your educational experience better. We recommend completing the survey immediately after the project.
-
-## Contents
-
-1. [Chapter I](#chapter-i) 
-2. [Chapter II](#chapter-ii) \
-   2.1. [Ready-made manifest](#part-1-ready-made-manifest) \
-   2.2. [Your own manifest](#part-2-your-own-manifest)
-
-## Chapter I
-
-Besides Docker Swarm, there are many other orchestration tools. One of the most popular is Kubernetes, a tool developed by Google. Kubernetes' main difference is its higher complexity and scale. Kubernetes is intended for more serious applications with a large number of services and complex interactions. It also has a number of additional built-in tools, such as an internal monitoring system.
-
-## Chapter II
-
-The result of this work must be a report containing detailed descriptions of how to implement each point, accompanied by screenshots. Prepare the report as a Markdown file in the `src` directory named `REPORT.MD`.
-
 ## Part 1. Ready-made manifest
 
 ### Task
