@@ -13,17 +13,14 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:8-jre
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
-COPY --from=builder /app/target/*.jar app.jar
 COPY wait-for-it.sh /app/wait-for-it.sh
-COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh wait-for-it.sh \ 
-    && groupadd --system appgroup \
-    && useradd --system --gid appgroup appuser 
+RUN chmod +x wait-for-it.sh
+RUN groupadd --system appgroup && useradd --system --gid appgroup appuser 
 USER appuser
-EXPOSE 8085
-HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
-CMD wget --no-verbose --tries=1 --spider  http://localhost:8085/ || exit 1
-
-ENTRYPOINT ["/app/entrypoint.sh"]
+EXPOSE 8087
+HEALTHCHECK --interval=15s --timeout=5s --start-period=45s --retries=3 \
+    CMD bash -c 'exec 3<>/dev/tcp/localhost/8087' || exit 1
+    
 CMD ["java", "-jar", "app.jar"]
+
 
